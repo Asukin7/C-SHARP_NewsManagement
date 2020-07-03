@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DbNews">
+  <DataContextMoniker Name="/DbNewsDataContext" />
+  <nestedChildShapes>
+    <classShape Id="695b03b8-4637-4819-9951-b84b9c79dd48" absoluteBounds="0.5, 0.5, 2, 1.7220992024739581">
+      <DataClassMoniker Name="/DbNewsDataContext/user" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8b5ad2a9-2b39-42ba-a7e6-0661636e525e" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 1.1620992024739583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1f359d45-1085-432a-b4b1-24b7f1b268fe" absoluteBounds="4, 0.5, 2, 1.1677168782552083">
+      <DataClassMoniker Name="/DbNewsDataContext/category" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b36954f4-d490-4972-b46c-ef8d3ff8dcfd" absoluteBounds="4.015, 0.96, 1.9700000000000002, 0.60771687825520826" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6d33fe42-97b8-45f4-be14-2ab7852c12d1" absoluteBounds="0.5, 3.125, 2, 2.0916874186197916">
+      <DataClassMoniker Name="/DbNewsDataContext/news" />
+      <nestedChildShapes>
+        <elementListCompartment Id="516bcde8-6d47-4c25-9082-128ecbdc43e3" absoluteBounds="0.51500000000000012, 3.585, 1.9700000000000002, 1.5316874186197915" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4 : 1.66771687825521); (3.625 : 2.04271687825521); (3.625 : 4.67881903694661); (2.5 : 4.67881903694661)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DbNewsDataContext/category/category_news" />
+      <nodes>
+        <classShapeMoniker Id="1f359d45-1085-432a-b4b1-24b7f1b268fe" />
+        <classShapeMoniker Id="6d33fe42-97b8-45f4-be14-2ab7852c12d1" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.5 : 2.22209920247396); (1.5 : 3.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DbNewsDataContext/user/user_news" />
+      <nodes>
+        <classShapeMoniker Id="695b03b8-4637-4819-9951-b84b9c79dd48" />
+        <classShapeMoniker Id="6d33fe42-97b8-45f4-be14-2ab7852c12d1" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="312f0a86-57b1-4d74-8c7e-52f6206c215e" absoluteBounds="4, 3.125, 2, 1.9068933105468751">
+      <DataClassMoniker Name="/DbNewsDataContext/comment" />
+      <nestedChildShapes>
+        <elementListCompartment Id="198bf730-2863-4e4c-aa80-4c4ce60a7b38" absoluteBounds="4.015, 3.585, 1.9700000000000002, 1.346893310546875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.5 : 4.07844665527344); (3.54166666666667 : 4.07844665527344 : JumpStart); (3.70833333333333 : 4.07844665527344 : JumpEnd); (4 : 4.07844665527344)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DbNewsDataContext/news/news_comment" />
+      <nodes>
+        <classShapeMoniker Id="6d33fe42-97b8-45f4-be14-2ab7852c12d1" />
+        <classShapeMoniker Id="312f0a86-57b1-4d74-8c7e-52f6206c215e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.5 : 2.22209920247396); (2.875 : 2.59709920247396); (2.875 : 3.57047132763672); (3.54166666666667 : 3.57047132763672 : JumpStart); (3.70833333333333 : 3.57047132763672 : JumpEnd); (4 : 3.57047132763672)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DbNewsDataContext/user/user_comment" />
+      <nodes>
+        <classShapeMoniker Id="695b03b8-4637-4819-9951-b84b9c79dd48" />
+        <classShapeMoniker Id="312f0a86-57b1-4d74-8c7e-52f6206c215e" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

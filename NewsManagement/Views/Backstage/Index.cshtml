@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "账号管理";
+    var type = Session["type"];
+}
+
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+
+<body>
+    <div id="app" class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                @Html.ActionLink("账号管理", "Index", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action active" })
+                @if (type.ToString() == "1")
+                {
+                    @Html.ActionLink("信息发布", "NewsAdd", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                    @Html.ActionLink("信息管理", "NewsManagement", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                    @Html.ActionLink("分类管理", "CategoryManagement", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                    @Html.ActionLink("评论管理", "CommentManagement", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                }
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-center" style="padding: 0;">账号信息</h4>
+                    <hr style="padding: 10px; margin: 0;" />
+                    <form style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                        <div class="form-group" style="width: 300px;">
+                            <div class="input-group" style="width: 300px;">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">账号</span>
+                                </div>
+                                <input type="text" class="form-control" disabled="disabled" v-model="username" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="width: 300px;">
+                            <div class="input-group" style="width: 300px;">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">昵称</span>
+                                </div>
+                                <input type="text" class="form-control" v-model="nickname" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="width: 300px;">
+                            <div class="input-group" style="width: 300px;">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">用户组</span>
+                                </div>
+                                <input type="text" class="form-control" disabled="disabled" v-model="type" />
+                            </div>
+                        </div>
+                    </form>
+                    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                        <button type="button" class="btn btn-primary" style="width: 300px; margin: 10px;" v-on:click="setUserNickname">保存</button>
+                        <a class="card-link" data-toggle="modal" data-target="#myModal">修改密码</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模态框 -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">修改密码</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- 模态框主体 -->
+                    <div class="modal-body">
+                        <form style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                            <div class="form-group" style="width: 300px;">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">新密码</span>
+                                    </div>
+                                    <input type="password" class="form-control" v-model="password" />
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 300px;">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">确认密码</span>
+                                    </div>
+                                    <input type="password" class="form-control" v-model="password2" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="setUserPassword">保存</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                username: null,
+                nickname: null,
+                type: null,
+                password: null,
+                password2: null
+            },
+            mounted () {
+                this.getUserInfo();
+            },
+            methods: {
+                getUserInfo() {
+                    var requestData = {};
+                    axios.post('/Backstage/getUserInfo', requestData).then(response => {
+                        if (response.data.code == 0) {
+                            this.username = response.data.data.username;
+                            this.nickname = response.data.data.nickname;
+                            if (response.data.data.type == 0) {
+                                this.type = '用户';
+                            } else if (response.data.data.type == 1) {
+                                this.type = '管理员';
+                            }
+                        } else {
+                            alert('发生异常');
+                        }
+                    }).catch(error => {
+                        alert('发生异常');
+                    });
+                },
+                setUserNickname() {
+                    var requestData = { nickname: this.nickname };
+                    axios.post('/Backstage/setUserNickname', requestData).then(response => {
+                        if (response.data.code == 0) {
+                            alert('修改成功');
+                        } else {
+                            alert('发生异常');
+                        }
+                    }).catch(error => {
+                        alert('发生异常');
+                    });
+                },
+                setUserPassword() {
+                    if (this.password == null || this.password2 == null) {
+                        alert('请输入密码');
+                        return;
+                    }
+                    if (this.password.length < 6 || this.password2.length < 6) {
+                        alert('密码长度不可小于6位');
+                        return;
+                    }
+                    if (this.password != this.password2) {
+                        alert('两次输入的密码不一致');
+                        return;
+                    }
+                    var requestData = { password: this.password };
+                    axios.post('/Backstage/setUserPassword', requestData).then(response => {
+                        if (response.data.code == 0) {
+                            alert('修改成功');
+                        } else {
+                            alert('发生异常');
+                        }
+                    }).catch(error => {
+                        alert('发生异常');
+                    });
+                }
+            }
+        })
+    </script>
+</body>

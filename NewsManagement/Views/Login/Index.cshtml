@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "登录";
+}
+<script>
+    function login() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var data = {
+                username: username,
+                password: password
+            }
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            url: "/Login/login",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.code == 0) {
+                    console.log(result);
+                    window.location.href = "/Backstage";
+                } else {
+                    alert("登录失败");
+                }
+            },
+            error: function (e) {
+                alert("发生异常");
+            }
+        })
+    }
+</script>
+
+<body>
+    <div class="card" style="width: 360px; margin: 300px auto 300px;">
+        <div class="card-body">
+            <h4 class="card-title text-center" style="padding: 0;">登录</h4>
+            <hr style="padding: 10px; margin: 0;"/>
+            <form style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <div class="form-group" style="width: 300px;">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">账号</span>
+                        </div>
+                        <input type="text" class="form-control" id="username" />
+                    </div>
+                </div>
+                <div class="form-group" style="width: 300px;">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">密码</span>
+                        </div>
+                        <input type="password" class="form-control" id="password" />
+                    </div>
+                </div>
+            </form>
+            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <button type="button" class="btn btn-primary" style="width: 300px; margin: 10px;" onclick="login()">登录</button>
+                @Html.ActionLink("注册", "Index", "Register", new { area = "" }, new { @class = "card-link" })
+            </div>
+        </div>
+    </div>
+</body>

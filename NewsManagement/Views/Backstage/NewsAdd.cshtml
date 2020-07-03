@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "信息发布";
+    var type = Session["type"];
+}
+
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/axios.js"></script>
+
+<body>
+    <div id="app" class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                @Html.ActionLink("账号管理", "Index", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                @if (type.ToString() == "1")
+                {
+                    @Html.ActionLink("信息发布", "NewsAdd", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action active" })
+                    @Html.ActionLink("信息管理", "NewsManagement", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                    @Html.ActionLink("分类管理", "CategoryManagement", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                    @Html.ActionLink("评论管理", "CommentManagement", "Backstage", new { area = "" }, new { @class = "list-group-item list-group-item-action" })
+                }
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-center" style="padding: 0;">信息发布</h4>
+                    <hr style="padding: 10px; margin: 0;" />
+                    <form>
+                        <div class="form-group">
+                            <label for="title">标题：</label>
+                            <input type="text" class="form-control" v-model="news.title" style="max-width: none;" />
+                        </div>
+                        <div class="form-group">
+                            <label for="summary">摘要：</label>
+                            <input type="text" class="form-control" v-model="news.summary" style="max-width: none;" />
+                        </div>
+                        <div class="form-group">
+                            <label for="category">分类：</label>
+                            <select class="form-control" v-model="news.categoryId" style="max-width: none;">
+                                <option v-for="item in categoryList" v-bind:value="item.id">{{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">正文：</label>
+                            <textarea rows="10" class="form-control" v-model="news.content" style="max-width: none;"></textarea>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                            <button type="button" class="btn btn-primary" style="width: 300px; margin: 10px;" v-on:click="addNews()">发布</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                categoryList: [],
+                news: {
+                    title: null,
+                    summary: null,
+                    categoryId: null,
+                    content: null
+                }
+            },
+            mounted() {
+                this.getCategoryList();
+            },
+            methods: {
+                getCategoryList() {
+                    var requestData = {};
+                    axios.post('/Backstage/getCategoryList', requestData).then(response => {
+                        if (response.data.code == 0) {
+                            this.categoryList = response.data.data;
+                            this.news.categoryId = this.categoryList[0].id;
+                        } else {
+                            alert('发生异常');
+                        }
+                    }).catch(error => {
+                        alert('发生异常');
+                    });
+                },
+                addNews() {
+                    var requestData = this.news;
+                    axios.post('/Backstage/addNews', requestData).then(response => {
+                        if (response.data.code == 0) {
+                            alert('发布成功');
+                        } else {
+                            alert('发生异常');
+                        }
+                    }).catch(error => {
+                        alert('发生异常');
+                    });
+                }
+            }
+        })
+    </script>
+</body>
